@@ -17,7 +17,6 @@
     text-align: center;
   }
   
-  /* title */
   header {
     text-align: center;
     font-size: 32px;
@@ -26,7 +25,6 @@
     color: white;
   }
   
-  /* main table */
   .snakeTable {
     width: 210px;
     height: 230px;
@@ -44,7 +42,6 @@
     }
   }
   
-  /* all boxes in the table */
   .box {
     background: white;
     border: solid 1px #16a085;
@@ -98,7 +95,6 @@
     display: none !important;
   }
   
-  /* modular window before and after game */
   .modul {
     display: flex;
     flex-direction: column;

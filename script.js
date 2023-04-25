@@ -1,5 +1,4 @@
 
-// ADD time?
 
 var snakeTable = document.querySelector(".snakeTable");
 var boxes = document.getElementsByClassName("box");
@@ -33,7 +32,7 @@ var snake = {
   }
 };
 
-// init game
+
 snake.init();
 
 start.addEventListener("click", startSnake);
@@ -44,20 +43,18 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-// start game
+
 function startSnake() {
   modul.classList.add("hidden");
-  // clearInterval(checkPageInterval);
   snake.time = 1;
   renderSnake();
   randomFood();
-  // interval, heart of the game
   setInt = setInterval(function() {
     move();
   }, snake.interval);
 }
 
-// end of game
+
 function stopp() {
   clearInterval(setInt);
   snake.final = snake.score;
@@ -69,13 +66,11 @@ function stopp() {
   modul.classList.remove("hidden");
 }
 
-// move the snake function
+
 function move() {
-  // check if move allowed & then eat food
   hitFood();
   hitBorder();
   hitSnake();
-  // actually move the snake
   updatePositions();
   renderSnake();
   document.addEventListener("keydown", turn);
@@ -83,10 +78,8 @@ function move() {
 }
 
 function updatePositions() {
-  // remove last snake part (first snake pos)
   boxes[snake.position[0][0] + snake.position[0][1] * table.rowsCols].classList.remove("snake");
   snake.position.shift();
-  // add new snake part
   var head = snake.position[snake.position.length - 1];
   switch (snake.direction) {
     case "left":
@@ -106,28 +99,22 @@ function updatePositions() {
   }
 }
 
-// checks border contact
 function hitBorder() {
   var headPos = snake.position.length-1;
-  // goes of limits
   if (((snake.position[headPos][0] === table.rowsCols-1) && (snake.direction === "right")) || ((snake.position[headPos][0] === 0) && (snake.direction === "left")) || ((snake.position[headPos][1] === table.rowsCols-1) && (snake.direction === "down")) ||  ((snake.position[headPos][1] === 0) && (snake.direction === "up"))) {
-    // console.log("border hit");
     stopp();
   }
 }
 
-// checks self contact
 function hitSnake() {
   var headPos = snake.position.length-1;
   for (var i=0; i<headPos; i++) {
     if (snake.position[headPos].toString() === snake.position[i].toString()) {
-      // console.log("snake hit");
       stopp();
     }
   } 
 }
 
-// checks food contact
 function hitFood() {
   var head = snake.position[snake.position.length-1];
   var tail = snake.position[0];
@@ -138,7 +125,6 @@ function hitFood() {
     snake.food++;
     snake.score += snake.food;
     scoreElt.innerHTML = snake.score + " pts";
-    // increase speed
     clearInterval(setInt);
     snake.interval = snake.interval - snake.interval/40;
     setInt = setInterval(function() {
@@ -147,12 +133,10 @@ function hitFood() {
   }
 }
 
-// random 'food'
 function randomFood() {
   var randomX = Math.floor(Math.random() * table.rowsCols);
   var randomY = Math.floor(Math.random() * table.rowsCols);
   random = randomX + randomY * table.rowsCols;
-  // picks another foodPos if food pops on snake
   while (boxes[random].classList.contains("snake")) {
     randomX = Math.floor(Math.random() * table.rowsCols);
     randomY = Math.floor(Math.random() * table.rowsCols);
@@ -162,19 +146,16 @@ function randomFood() {
   foodPos = [randomX, randomY];
 }
 
-// read positions and render the snake
 function renderSnake() {
   for (var i=0; i<snake.position.length; i++) {
     boxes[snake.position[i][0] + snake.position[i][1] * table.rowsCols].classList.add("snake");
   }
 }
 
-// keypress handling to turn
 function turn(e) {
   if (snake.canTurn) {
     switch (e.keyCode) {
       case 13:
-        // document.removeEventListener()
         break;
       case 37:// left
         if (snake.direction === "right") return;
@@ -199,16 +180,13 @@ function turn(e) {
   }
 }
 
-// table creation
 function tableCreation() {
   if (snakeTable.innerHTML === "") {
-    // main table
     for (var i = 0; i<table.boxes; i++) {
       var divElt = document.createElement("div");
       divElt.classList.add("box");
       snakeTable.appendChild(divElt);
     }
-    // status bar
     var statusElt = document.createElement("div");
     statusElt.classList.add("status");
     snakeTable.appendChild(statusElt);
@@ -219,18 +197,6 @@ function tableCreation() {
   }
 }
 
-// handle focus of the page
-// function checkPageFocus() {
-//   if (document.hasFocus()) {
-//     modul.classList.remove("hidden");
-//   }
-//   else {
-//     modul.classList.add("hidden");
-//   }
-// }
-// var checkPageInterval = setInterval(checkPageFocus, 300);
-
-// swipe Showcase
 $("document").ready(function() {
   $("body")
     .swipeDetector()
@@ -252,31 +218,24 @@ $("document").ready(function() {
     });
 });
 
-// swipe function --> credit: https://codepen.io/AlexEmashev/pen/BKgQdx?editors=0100
+
 (function($) {
   $.fn.swipeDetector = function(options) {
-    // States: 0 - no swipe, 1 - swipe started, 2 - swipe released
     var swipeState = 0;
-    // Coordinates when swipe started
     var startX = 0;
     var startY = 0;
-    // Distance of swipe
     var pixelOffsetX = 0;
     var pixelOffsetY = 0;
-    // Target element which should detect swipes.
+
     var swipeTarget = this;
     var defaultSettings = {
-      // Amount of pixels, when swipe don't count.
       swipeThreshold: 30,
-      // Flag that indicates that plugin should react only on touch events.
-      // Not on mouse events too.
       useOnlyTouch: true
     };
 
-    // Initializer
+    
     (function init() {
       options = $.extend(defaultSettings, options);
-      // Support touch and mouse as well.
       swipeTarget.on("mousedown touchstart", swipeStart);
       $("html").on("mouseup touchend", swipeEnd);
       $("html").on("mousemove touchmove", swiping);
@@ -302,14 +261,12 @@ $("document").ready(function() {
           Math.abs(pixelOffsetX) > Math.abs(pixelOffsetY) &&
           Math.abs(pixelOffsetX) > options.swipeThreshold
         ) {
-          // Horizontal Swipe
           if (pixelOffsetX < 0) {
             swipeTarget.trigger($.Event("swipeLeft.sd"));
           } else {
             swipeTarget.trigger($.Event("swipeRight.sd"));
           }
         } else if (Math.abs(pixelOffsetY) > options.swipeThreshold) {
-          // Vertical swipe
           if (pixelOffsetY < 0) {
             swipeTarget.trigger($.Event("swipeUp.sd"));
           } else {
@@ -320,7 +277,6 @@ $("document").ready(function() {
     }
 
     function swiping(event) {
-      // If swipe don't occuring, do nothing.
       if (swipeState !== 1) return;
 
       if (event.originalEvent.touches) {
@@ -340,11 +296,10 @@ $("document").ready(function() {
       }
     }
 
-    return swipeTarget; // Return element available for chaining.
+    return swipeTarget; 
   };
 })(jQuery);
 
-// remove scroll for mobile IOS issue
 function preventDefault(e){e.preventDefault();}
 function disableScroll(){
     document.body.addEventListener('touchmove', preventDefault, { passive: false });
@@ -354,4 +309,4 @@ function enableScroll(){
 }
 disableScroll();
 
-// https://www.theodinproject.com/courses/javascript-and-jquery/lessons/jquery-and-the-dom
+
